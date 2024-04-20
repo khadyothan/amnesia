@@ -1,23 +1,32 @@
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.Button;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
-public class HelloFX extends Application {
+public class HelloFX extends Application implements EventHandler<ActionEvent>{
+
+    int count = 0;
+    Button b = new Button("Counter");
 
     @Override
     public void start(Stage stage) {
-        String javaVersion = System.getProperty("java.version");
-        String javafxVersion = System.getProperty("javafx.version");
-        Label l = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-        Scene scene = new Scene(new StackPane(l), 640, 480);
-        stage.setScene(scene);
+        b.setOnAction(this);
+        b.setPrefSize(100, 30);
+        FlowPane fp = new FlowPane(b);
+        Scene sc = new Scene(fp, 300, 300);
+        stage.setScene(sc);
         stage.show();
     }
 
+    @Override
+    public void handle(ActionEvent ae) {
+        count++;
+        b.setText(""+count);
+    }
     public static void main(String[] args) {
         launch();
     }
-
 }
