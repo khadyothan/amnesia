@@ -1,6 +1,4 @@
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
@@ -13,15 +11,7 @@ public class HelloFX extends Application {
 
     @Override
     public void start(Stage stage) {
-        
-        b.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent ae){
-                count++;
-                b.setText(""+count);
-            }
-        });
-
+        b.setOnAction(e -> {count++; b.setText(""+ count);});
         b.setPrefSize(100, 30);
         FlowPane fp = new FlowPane(b);
         Scene sc = new Scene(fp, 300, 300);
