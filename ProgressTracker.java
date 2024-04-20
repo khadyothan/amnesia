@@ -1,3 +1,5 @@
+import javafx.application.Application;
+import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -26,8 +28,15 @@ class Note {
 }
 
 
-public class ProgressTracker {
+public class ProgressTracker extends Application{
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        stage.show();
+    }
+
     public static void main(String[] args){
+        launch(args);
         Scanner sc = new Scanner(System.in);
         List<Note> notesList = new ArrayList<>();
 
@@ -52,5 +61,5 @@ public class ProgressTracker {
         for (Note note : notesList) {
             System.out.println("Date: " + note.getDate() + "\nTopic: " + note.getTopic() + "\nNotes: " + note.getNotes() + "\n\n");
         }
-    }
+    }  
 }
