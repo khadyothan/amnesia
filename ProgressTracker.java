@@ -100,7 +100,11 @@ public class ProgressTracker extends Application{
             e.printStackTrace();
         }
 
-        // System.out.println(progressTracker.values());
+        for (Note n : progressTracker.values()) {
+            displayProgress.appendText("Date: " + n.getDate() + "\n");
+            displayProgress.appendText("Topic: " + n.getTopic() + "\n");
+            displayProgress.appendText("Notes: " + n.getNotes() + "\n\n");
+        }
 
         add.setOnAction(event -> {
             LocalDate date = dp.getValue();
@@ -109,7 +113,6 @@ public class ProgressTracker extends Application{
 
             Note note = new Note(date, topic, notes);
             progressTracker.put(date, note);
-            System.out.println(progressTracker.values());
 
             displayProgress.clear();
             for (Note n : progressTracker.values()) {
