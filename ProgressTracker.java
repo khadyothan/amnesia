@@ -11,8 +11,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Scanner;
 
 class Note {
     private LocalDate date;
@@ -33,7 +37,7 @@ class Note {
 
 public class ProgressTracker extends Application{
 
-    HashMap<LocalDate, Note> progressTracker = new HashMap<>();
+    LinkedHashMap<LocalDate, Note> progressTracker = new LinkedHashMap<>();
     @Override
     public void start(Stage stage) throws Exception {
 
@@ -83,6 +87,21 @@ public class ProgressTracker extends Application{
         output.getChildren().addAll(separator, displayProgress);
         trackerForm.getChildren().addAll(dateBox, topicBox, notesBox, buttonBox, output);
 
+        try(Scanner sc = new Scanner(new FileInputStream("ProgressTracker.txt"))){
+            LocalDate d; 
+            String t, n;
+            while (sc.hasNextLine()) {
+                d = LocalDate.parse(sc.nextLine());
+                t = sc.nextLine();
+                n = sc.nextLine();
+                progressTracker.put(d, new Note(d, t, n));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // System.out.println(progressTracker.values());
+
         add.setOnAction(event -> {
             LocalDate date = dp.getValue();
             String topic = topicText.getText();
@@ -90,14 +109,28 @@ public class ProgressTracker extends Application{
 
             Note note = new Note(date, topic, notes);
             progressTracker.put(date, note);
+            System.out.println(progressTracker.values());
 
-            displayProgress.appendText("Date: " + date + "\n");
-            displayProgress.appendText("Topic: " + topic + "\n");
-            displayProgress.appendText("Notes: " + notes + "\n\n");
-
+            displayProgress.clear();
+            for (Note n : progressTracker.values()) {
+                displayProgress.appendText("Date: " + n.getDate() + "\n");
+                displayProgress.appendText("Topic: " + n.getTopic() + "\n");
+                displayProgress.appendText("Notes: " + n.getNotes() + "\n\n");
+            }
+                
             dp.setValue(null);
             topicText.clear();
             notesText.clear();
+
+            try(PrintStream ps = new PrintStream(new FileOutputStream("ProgressTracker.txt"))) {
+                for (Note n : progressTracker.values()){
+                    ps.println(n.getDate());
+                    ps.println(n.getTopic());
+                    ps.println(n.getNotes());
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
         });
 
         Scene sc = new Scene(trackerForm, 600, 600);
