@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -59,7 +60,7 @@ public class ProgressTracker extends Application{
 
         TextArea displayProgress = new TextArea();
         displayProgress.setEditable(false);
-        displayProgress.setPrefSize(400, 300);
+        displayProgress.setPrefSize(400, 800);
 
         HBox dateBox = new HBox();
         dateBox.setAlignment(Pos.CENTER);
@@ -73,8 +74,9 @@ public class ProgressTracker extends Application{
         HBox buttonBox = new HBox();
         buttonBox.setAlignment(Pos.CENTER);
 
-        VBox trackerForm = new VBox();
-        trackerForm.setSpacing(10);
+        VBox inputForm = new VBox();
+        inputForm.setAlignment(Pos.CENTER);
+        inputForm.setSpacing(10);
 
         VBox output = new VBox();
         output.setSpacing(10);
@@ -84,8 +86,10 @@ public class ProgressTracker extends Application{
         notesBox.getChildren().addAll(notesLabel, notesText);
         buttonBox.getChildren().addAll(add);
 
+        inputForm.getChildren().addAll(dateBox, topicBox, notesBox, buttonBox);
         output.getChildren().addAll(separator, displayProgress);
-        trackerForm.getChildren().addAll(dateBox, topicBox, notesBox, buttonBox, output);
+
+        SplitPane trackerForm = new SplitPane(inputForm, output);
 
         try(Scanner sc = new Scanner(new FileInputStream("ProgressTracker.txt"))){
             LocalDate d; 
@@ -136,7 +140,7 @@ public class ProgressTracker extends Application{
             }
         });
 
-        Scene sc = new Scene(trackerForm, 600, 600);
+        Scene sc = new Scene(trackerForm, 800, 800);
 
         stage.setScene(sc);
         stage.show();
